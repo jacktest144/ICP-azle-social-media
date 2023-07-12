@@ -1,0 +1,34 @@
+type Comment = record {
+  id : text;
+  content : text;
+  sender : principal;
+  postId : text;
+};
+type CommentPayload = record { content : text; postId : text };
+type Post = record {
+  id : text;
+  title : text;
+  owner : principal;
+  body : text;
+  createdAt : nat64;
+  likes : float64;
+  updatedAt : opt nat64;
+  image : text;
+  comments : vec text;
+};
+type PostPayload = record { title : text; body : text; image : text };
+type _AzleResult = variant { Ok : Comment; Err : text };
+type _AzleResult_1 = variant { Ok : Post; Err : text };
+type _AzleResult_2 = variant { Ok : vec Comment; Err : text };
+type _AzleResult_3 = variant { Ok : vec Post; Err : text };
+service : () -> {
+  commentOnPost : (CommentPayload) -> (_AzleResult);
+  createPost : (PostPayload) -> (_AzleResult_1);
+  deleteComment : (text) -> (_AzleResult);
+  deletePost : (text) -> (_AzleResult_1);
+  getCommentsOnPost : (text) -> (_AzleResult_2) query;
+  getPost : (text) -> (_AzleResult_1) query;
+  getPosts : () -> (_AzleResult_3) query;
+  likePost : (text) -> (_AzleResult_1);
+  updatePost : (text, PostPayload) -> (_AzleResult_1);
+}
